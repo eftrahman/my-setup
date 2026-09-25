@@ -1,0 +1,29 @@
+# Generated desktop state
+home/.config/hypr/.initial_startup_done
+home/.config/hypr/wallpaper_effects/.wallpaper_current
+home/.config/hypr/wallpaper_effects/.wallpaper_modified
+home/.config/rofi/.current_wallpaper
+home/.config/waybar/config
+home/.config/waybar/style.css
+home/.config/wallust/sequences
+home/.config/wallust/*.json
+
+# Local backups and editor debris
+*.bak
+*.bak-*
+*.bak.*
+*.before-*
+*.orig
+*.rej
+*~
+*.swp
+
+# Runtime/log/cache files
+*.log
+.DS_Store
+__pycache__/
+*.pyc
+
+# Machine-local overrides (copy the examples, never commit the real files)
+local/*
+!local/.gitkeep

@@ -1,0 +1,262 @@
+/* Tech Console — dark glass with cyan/violet telemetry accents */
+
+@define-color panel rgba(8, 11, 22, 0.94);
+@define-color panel-soft rgba(17, 22, 39, 0.88);
+@define-color chip rgba(27, 34, 56, 0.76);
+@define-color chip-hover rgba(50, 63, 92, 0.92);
+@define-color outline rgba(124, 141, 189, 0.30);
+@define-color text #dce6ff;
+@define-color muted #8590aa;
+@define-color cyan #5ee7f7;
+@define-color violet #b991ff;
+@define-color green #78f0c2;
+@define-color amber #ffcc66;
+@define-color red #ff6b81;
+
+* {
+  min-height: 0;
+  border: none;
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 12px;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+window#waybar {
+  color: @text;
+  background: transparent;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  min-height: 28px;
+  padding: 0 5px;
+  border: 1px solid @outline;
+  border-radius: 9px;
+  background: @panel;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.42);
+}
+
+.modules-center {
+  border-color: rgba(94, 231, 247, 0.48);
+  background: rgba(11, 15, 29, 0.96);
+}
+
+tooltip {
+  padding: 8px 10px;
+  color: @text;
+  background: rgba(8, 11, 22, 0.98);
+  border: 1px solid rgba(94, 231, 247, 0.45);
+  border-radius: 8px;
+}
+
+tooltip label {
+  color: @text;
+}
+
+/* Launcher and focused-window identity */
+#custom-menu {
+  margin: 2px 3px 2px 0;
+  padding: 0 8px;
+  color: @cyan;
+  background: rgba(94, 231, 247, 0.10);
+  border-radius: 6px;
+}
+
+#custom-menu:hover {
+  color: #071016;
+  background: @cyan;
+}
+
+#window {
+  min-width: 80px;
+  padding: 0 9px 0 6px;
+  color: #b7c1da;
+  font-weight: 500;
+}
+
+/* Workspace command deck */
+#workspaces {
+  padding: 0 2px;
+}
+
+#workspaces button {
+  min-width: 17px;
+  margin: 2px 1px;
+  padding: 0 6px;
+  color: @muted;
+  background: transparent;
+  border-radius: 6px;
+  box-shadow: none;
+  transition: all 180ms ease;
+}
+
+#workspaces button:hover {
+  color: @text;
+  background: @chip-hover;
+}
+
+#workspaces button.active {
+  color: @cyan;
+  background: rgba(94, 231, 247, 0.13);
+  box-shadow: inset 0 -2px @cyan;
+}
+
+#workspaces button.urgent {
+  color: #0b0d15;
+  background: @red;
+  box-shadow: inset 0 -2px #ffd3da;
+}
+
+/* Telemetry chips */
+#cpu,
+#memory,
+#temperature,
+#network,
+#pulseaudio,
+#tray,
+#custom-weather,
+#idle_inhibitor,
+#clock,
+#custom-nightlight,
+#custom-swaync,
+#custom-dot_update,
+#custom-power,
+#custom-lock,
+#keyboard-state,
+#custom-keyboard {
+  margin: 2px 1px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background: @chip;
+}
+
+#cpu {
+  color: @cyan;
+}
+
+#memory {
+  color: @violet;
+}
+
+#temperature {
+  color: @green;
+}
+
+#network {
+  color: #82b7ff;
+}
+
+#pulseaudio {
+  color: #d1a8ff;
+}
+
+#pulseaudio.muted {
+  color: @red;
+}
+
+#clock {
+  padding: 0 9px;
+  color: @cyan;
+  background: rgba(94, 231, 247, 0.11);
+  letter-spacing: 0.4px;
+}
+
+#custom-weather {
+  color: @amber;
+}
+
+#idle_inhibitor {
+  color: @muted;
+}
+
+#idle_inhibitor.activated {
+  color: @green;
+  background: rgba(120, 240, 194, 0.13);
+  box-shadow: inset 0 -2px @green;
+}
+
+#custom-nightlight {
+  color: @amber;
+}
+
+#custom-swaync {
+  color: @violet;
+}
+
+#custom-power {
+  color: @red;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+#custom-lock {
+  color: @green;
+}
+
+#tray {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#network:hover,
+#pulseaudio:hover,
+#custom-weather:hover,
+#idle_inhibitor:hover,
+#clock:hover,
+#custom-nightlight:hover,
+#custom-swaync:hover,
+#custom-power:hover,
+#custom-lock:hover {
+  background: @chip-hover;
+}
+
+#cpu.warning,
+#memory.warning {
+  color: @amber;
+}
+
+#cpu.critical,
+#memory.critical,
+#temperature.critical {
+  color: @red;
+  background: rgba(255, 107, 129, 0.13);
+}
+
+/* Drawer children */
+#custom-light_dark,
+#custom-file_manager,
+#custom-tty,
+#custom-browser,
+#custom-settings {
+  margin: 2px 1px;
+  padding: 0 6px;
+  color: @muted;
+  border-radius: 6px;
+  background: @chip;
+}
+
+#custom-light_dark:hover,
+#custom-file_manager:hover,
+#custom-tty:hover,
+#custom-browser:hover,
+#custom-settings:hover {
+  color: @cyan;
+  background: @chip-hover;
+}
+
+menu {
+  color: @text;
+  background: @panel;
+  border: 1px solid @outline;
+  border-radius: 8px;
+}
+
+menuitem:hover {
+  color: @cyan;
+  background: @chip-hover;
+}

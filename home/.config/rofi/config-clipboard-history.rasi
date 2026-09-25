@@ -1,0 +1,184 @@
+/* Hyprland clipboard history — adapts to the current Wallust palette. */
+
+@theme "~/.config/rofi/wallust/colors-rofi.rasi"
+@import "~/.config/rofi/0-shared-fonts.rasi"
+
+configuration {
+    show-icons: false;
+    hover-select: true;
+    me-select-entry: "MouseSecondary";
+    me-accept-entry: "MousePrimary";
+}
+
+* {
+    panel:       @normal-background;
+    surface:     @color0;
+    accent:      @color12;
+    text:        @foreground;
+    muted:       @color8;
+
+    background-color: transparent;
+    text-color:       @text;
+    margin:           0px;
+    padding:          0px;
+    border:           0px;
+}
+
+window {
+    location:         center;
+    anchor:           center;
+    width:            760px;
+    transparency:     "real";
+    background-color: @background;
+    border:           2px solid;
+    border-color:     @accent;
+    border-radius:    18px;
+}
+
+mainbox {
+    spacing:          14px;
+    padding:          22px;
+    background-color: transparent;
+    children:         [ inputbar, listview, message ];
+}
+
+inputbar {
+    spacing:          12px;
+    padding:          12px 16px;
+    background-color: @panel;
+    border:           1px solid;
+    border-color:     @surface;
+    border-radius:    12px;
+    children:         [ prompt, entry, num-filtered-rows, textbox-num-sep, num-rows ];
+}
+
+prompt {
+    enabled:          true;
+    padding:          0px 10px 0px 0px;
+    text-color:       @accent;
+    background-color: transparent;
+}
+
+entry {
+    expand:            true;
+    placeholder:       "Search copied text and images…";
+    placeholder-color: @muted;
+    background-color:  transparent;
+    text-color:        @text;
+    cursor:            text;
+}
+
+num-filtered-rows {
+    expand:           false;
+    text-color:       @muted;
+    background-color: transparent;
+}
+
+textbox-num-sep {
+    expand:           false;
+    str:              "/";
+    text-color:       @muted;
+    background-color: transparent;
+}
+
+num-rows {
+    expand:           false;
+    text-color:       @muted;
+    background-color: transparent;
+}
+
+listview {
+    enabled:          true;
+    columns:          1;
+    lines:            9;
+    cycle:            true;
+    dynamic:          true;
+    scrollbar:        true;
+    layout:           vertical;
+    reverse:          false;
+    fixed-height:     true;
+    fixed-columns:    true;
+    spacing:          7px;
+    padding:          4px;
+    background-color: transparent;
+}
+
+scrollbar {
+    handle-width:     3px;
+    handle-color:     @accent;
+    background-color: @surface;
+    border-radius:    8px;
+}
+
+element {
+    spacing:          12px;
+    padding:          12px 14px;
+    background-color: @panel;
+    text-color:       @text;
+    border:           1px solid;
+    border-color:     transparent;
+    border-radius:    11px;
+    cursor:           pointer;
+}
+
+element alternate.normal {
+    background-color: @surface;
+    text-color:       @text;
+}
+
+element normal.normal {
+    background-color: @panel;
+    text-color:       @text;
+}
+
+element selected.normal,
+element selected.active,
+element selected.urgent {
+    background-color: @accent;
+    text-color:       @normal-background;
+    border-color:     @accent;
+}
+
+element-text {
+    vertical-align:   0.5;
+    horizontal-align: 0.0;
+    background-color: transparent;
+    text-color:       inherit;
+    highlight:        bold;
+    cursor:           inherit;
+}
+
+element-text selected {
+    background-color: transparent;
+    text-color:       @normal-background;
+    highlight:        bold;
+}
+
+element-icon {
+    size:             0px;
+    background-color: transparent;
+}
+
+message {
+    enabled:          true;
+    background-color: transparent;
+}
+
+textbox {
+    padding:          10px 12px;
+    background-color: @panel;
+    text-color:       @muted;
+    border-radius:    10px;
+    horizontal-align: 0.5;
+    vertical-align:   0.5;
+    markup:           true;
+}
+
+error-message {
+    padding:          14px;
+    background-color: @panel;
+    text-color:       @text;
+    border:           2px solid;
+    border-color:     @urgent-background;
+    border-radius:    12px;
+}

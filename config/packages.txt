@@ -1,0 +1,38 @@
+# Packages used directly by the tracked configuration. The maintained
+# Ubuntu-Hyprland installer owns the larger Hyprland dependency graph.
+ca-certificates
+curl
+fontconfig
+git
+jq
+kitty
+lsd
+rsync
+tmux
+wl-clipboard
+xz-utils
+zsh
+
+# Desktop commands referenced by Hyprland, Waybar, and user scripts.
+brightnessctl
+btop
+cava
+cliphist
+fastfetch
+grim
+hypridle
+hyprlock
+hyprpaper
+hyprpicker
+hyprsunset
+playerctl
+qt5ct
+qt6ct
+rofi
+slurp
+swappy
+sway-notification-center
+thunar
+waybar
+wlogout
+xdg-desktop-portal-hyprland

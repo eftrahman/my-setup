@@ -1,0 +1,269 @@
+/* Personal Waybar theme: Refined */
+
+@define-color bar-bg rgba(12, 14, 22, 0.00);
+@define-color panel rgba(20, 22, 32, 0.94);
+@define-color surface rgba(43, 46, 62, 0.86);
+@define-color surface-hover rgba(61, 64, 84, 0.96);
+@define-color outline rgba(191, 177, 230, 0.20);
+@define-color text #ececf4;
+@define-color muted #9ea3b8;
+@define-color accent #b69cff;
+@define-color accent-strong #9f7aea;
+@define-color teal #75d7cb;
+@define-color warning #f0c674;
+@define-color danger #ef7d8d;
+
+* {
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+window#waybar {
+  background: @bar-bg;
+  color: @text;
+}
+
+window#waybar.hidden {
+  opacity: 0.25;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  background: @panel;
+  border: 1px solid @outline;
+  border-radius: 13px;
+  padding: 2px 6px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.30);
+}
+
+tooltip {
+  background: #181a24;
+  color: @text;
+  border: 1px solid @outline;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+tooltip label {
+  color: @text;
+}
+
+#window,
+#custom-playerctl,
+#custom-menu,
+#custom-swaync,
+#custom-dot_update,
+#tray,
+#custom-weather,
+#network,
+#pulseaudio,
+#battery,
+#clock,
+#custom-nightlight,
+#custom-power,
+#custom-lock,
+#keyboard-state {
+  color: @text;
+  padding: 0 8px;
+  margin: 2px 1px;
+  border-radius: 9px;
+}
+
+#custom-menu {
+  color: @accent;
+  font-size: 18px;
+  padding-left: 8px;
+  padding-right: 9px;
+}
+
+#custom-menu:hover,
+#custom-swaync:hover,
+#custom-weather:hover,
+#network:hover,
+#pulseaudio:hover,
+#battery:hover,
+#clock:hover,
+#custom-nightlight:hover,
+#custom-power:hover,
+#custom-lock:hover,
+#keyboard-state:hover {
+  background: @surface-hover;
+}
+
+#window {
+  background: @surface;
+  color: @text;
+  padding-left: 11px;
+  padding-right: 11px;
+  margin-left: 3px;
+  font-weight: bold;
+}
+
+window#waybar.empty #window {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+#custom-playerctl {
+  color: @muted;
+  font-size: 12px;
+  font-weight: 500;
+  padding-right: 10px;
+}
+
+#custom-playerctl.Playing {
+  color: @teal;
+}
+
+#workspaces {
+  padding: 0 4px;
+  margin: 0;
+}
+
+#workspaces button {
+  min-width: 18px;
+  color: @muted;
+  background: transparent;
+  box-shadow: none;
+  padding: 0 9px;
+  margin: 3px 2px;
+  border-radius: 9px;
+  font-weight: 700;
+}
+
+#workspaces button.empty {
+  color: #70758a;
+}
+
+#workspaces button:hover {
+  color: @text;
+  background: @surface-hover;
+}
+
+#workspaces button.active {
+  color: #17141f;
+  background: @accent;
+  padding-left: 13px;
+  padding-right: 13px;
+  box-shadow: inset 0 -2px @accent-strong;
+}
+
+#workspaces button.urgent {
+  color: #17141f;
+  background: @danger;
+}
+
+#custom-swaync {
+  color: @muted;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+#custom-dot_update {
+  color: @warning;
+  padding: 0 4px;
+}
+
+#tray {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background: @danger;
+}
+
+#custom-weather {
+  color: @teal;
+}
+
+#network {
+  color: @teal;
+  font-size: 15px;
+  min-width: 18px;
+}
+
+#network.disconnected {
+  color: @danger;
+}
+
+#pulseaudio {
+  color: @text;
+}
+
+#pulseaudio.muted {
+  color: @danger;
+}
+
+#battery {
+  color: @text;
+}
+
+#battery.charging,
+#battery.plugged,
+#battery.full {
+  color: @teal;
+}
+
+#battery.warning:not(.charging) {
+  color: @warning;
+}
+
+#battery.critical:not(.charging) {
+  color: @danger;
+}
+
+#clock {
+  color: #f1edff;
+  background: rgba(104, 83, 153, 0.38);
+  padding-left: 11px;
+  padding-right: 11px;
+  font-weight: 700;
+}
+
+#custom-nightlight {
+  color: @warning;
+  font-size: 15px;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+#custom-power {
+  color: @danger;
+  font-size: 16px;
+  padding-left: 8px;
+  padding-right: 9px;
+}
+
+#custom-lock,
+#keyboard-state {
+  color: @muted;
+}
+
+menu {
+  background: #181a24;
+  color: @text;
+  border: 1px solid @outline;
+  border-radius: 8px;
+}
+
+menuitem {
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+
+menuitem:hover {
+  background: @surface-hover;
+}

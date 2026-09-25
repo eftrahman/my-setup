@@ -1,0 +1,87 @@
+/* Personal Waybar layout: clean three-island design */
+{
+  "include": [
+    "$HOME/.config/waybar/Modules",
+    "$HOME/.config/waybar/ModulesWorkspaces",
+    "$HOME/.config/waybar/ModulesCustom",
+    "$HOME/.config/waybar/ModulesGroups",
+    "$HOME/.config/waybar/UserModules"
+  ],
+
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "exclusive": true,
+  "passthrough": false,
+  "fixed-center": true,
+  "ipc": true,
+  "spacing": 0,
+  "margin-top": 4,
+  "margin-bottom": 4,
+  "margin-left": 10,
+  "margin-right": 10,
+
+  "modules-left": [
+    "group/app_drawer",
+    "hyprland/window"
+  ],
+
+  "modules-center": [
+    "hyprland/workspaces#clean"
+  ],
+
+  "modules-right": [
+    "group/notify",
+    "tray",
+    "custom/weather",
+    "network#clean",
+    "group/audio",
+    "clock#clean",
+    "custom/nightlight",
+    "group/status"
+  ],
+
+  "hyprland/workspaces#clean": {
+    "all-outputs": true,
+    "sort-by-number": true,
+    "show-special": false,
+    "on-click": "activate",
+    "on-scroll-up": "hyprctl dispatch workspace e+1",
+    "on-scroll-down": "hyprctl dispatch workspace e-1",
+    "persistent-workspaces": {
+      "*": 5
+    },
+    "format": "{name}"
+  },
+
+  "network#clean": {
+    "format": "{ifname}",
+    "format-wifi": "{icon}",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "󰤭",
+    "format-linked": "󰈁",
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "tooltip-format-wifi": "{essid}  •  {signalStrength}%\n{ipaddr}\n↑ {bandwidthUpBytes}   ↓ {bandwidthDownBytes}",
+    "tooltip-format-ethernet": "Ethernet  •  {ifname}\n{ipaddr}\n↑ {bandwidthUpBytes}   ↓ {bandwidthDownBytes}",
+    "tooltip-format-disconnected": "Network disconnected",
+    "on-click-right": "$HOME/.config/hypr/scripts/WaybarScripts.sh --nmtui"
+  },
+
+  "clock#clean": {
+    "interval": 30,
+    "format": "󰥔 {:%H:%M}",
+    "format-alt": "󰃭 {:%a, %d %b  %H:%M}",
+    "tooltip-format": "<big>{:%A, %d %B %Y}</big>\n<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#c9b8ff'><b>{}</b></span>",
+        "days": "<span color='#e7e9f4'>{}</span>",
+        "weekdays": "<span color='#75d7cb'><b>{}</b></span>",
+        "today": "<span color='#b69cff'><b><u>{}</u></b></span>"
+      }
+    }
+  }
+}

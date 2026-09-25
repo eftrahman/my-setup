@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+# shellcheck source=scripts/lib.sh
+source "$SCRIPT_DIR/lib.sh"
+ROOT=$(repo_root)
+# shellcheck source=config/versions.env
+source "$ROOT/config/versions.env"
+load_os_release
+
+portal_installed=0
+if dpkg-query -W -f='${Status}' xdg-desktop-portal-hyprland 2>/dev/null | grep -q 'install ok installed'; then
+  portal_installed=1
+fi
+if command -v Hyprland >/dev/null && (( portal_installed == 1 )); then
+  ok "Hyprland and its portal are already installed; upstream install stage is not needed."
+  exit 0
+fi
+
+cache_base=${XDG_CACHE_HOME:-$HOME/.cache}/eftear-workstation-bootstrap
+installer_dir=$cache_base/Ubuntu-Hyprland-${VERSION_ID}
+run mkdir -p "$cache_base"
+
+if [[ ! -d $installer_dir/.git ]]; then
+  run git clone --branch "$VERSION_ID" --single-branch "$HYPRLAND_INSTALLER_URL" "$installer_dir"
+else
+  run git -C "$installer_dir" fetch origin "$VERSION_ID"
+  run git -C "$installer_dir" checkout "$VERSION_ID"
+  run git -C "$installer_dir" pull --ff-only origin "$VERSION_ID"
+fi
+
+warn "The maintained upstream installer is interactive because GPU, SDDM, and laptop choices are machine-specific."
+warn "Review the choices it shows. Keep NVIDIA/ROG disabled unless the new machine actually needs them."
+if [[ ${DRY_RUN:-0} == 1 ]]; then
+  print_command bash "$installer_dir/install.sh" --preset "$ROOT/config/upstream-preset.sh"
+else
+  (cd "$installer_dir" && bash ./install.sh --preset "$ROOT/config/upstream-preset.sh")
+fi
