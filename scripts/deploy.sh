@@ -57,4 +57,14 @@ else
   ln -sfn "$HOME/Pictures/wallpapers/Dynamic-Wallpapers/Dark/Beach-Dark.png" "$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
 fi
 
+# Keep KDE applications such as Dolphin on a coherent light palette. The
+# qt5ct/qt6ct and Kvantum files above provide matching Catppuccin Latte colors;
+# this command updates KDE Frameworks' own view palette without replacing other
+# kdeglobals preferences.
+if command -v plasma-apply-colorscheme >/dev/null 2>&1; then
+  run plasma-apply-colorscheme KubuntuLight
+else
+  warn "plasma-apply-colorscheme is unavailable; skipping the KDE light palette"
+fi
+
 ok "Configuration deployed. Backup root: $backup_root"
