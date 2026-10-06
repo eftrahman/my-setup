@@ -1,5 +1,16 @@
 # Troubleshooting and preserved fixes
 
+## Installation was interrupted or the desktop session closed
+
+Reconnect AC power, log back into Plasma, and rerun `./bootstrap.sh`. The package stage skips tools that are not published by the enabled Ubuntu repositories and leaves them to the maintained upstream installer. The Hyprland stage checks the complete desktop runtime, so a partial installation is resumed instead of being mistaken for a finished one.
+
+If APT itself was interrupted, repair it first:
+
+```bash
+sudo dpkg --configure -a
+sudo apt-get --fix-broken install
+```
+
 ## Hyprland starts with errors or missing shared libraries
 
 Do not mix locally compiled Hyprland ecosystem libraries with PPA packages. On Ubuntu 24.04/26.04, rerun the maintained upstream stage so Hyprland, Aquamarine, Hyprutils, Hyprgraphics, Hyprlang, portals, and related packages come from a compatible source:
@@ -64,4 +75,3 @@ The repository starts with automatic monitor rules. Inspect connector names with
 ## Undo a deployment
 
 Every replaced path is moved beneath `~/.local/state/eftear-dotfiles/backups/<timestamp>/`. Stop the affected applications (or log out), inspect that directory, and copy back only the paths you want. Backups are never automatically deleted.
-

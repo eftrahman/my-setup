@@ -12,9 +12,24 @@ portal_installed=0
 if dpkg-query -W -f='${Status}' xdg-desktop-portal-hyprland 2>/dev/null | grep -q 'install ok installed'; then
   portal_installed=1
 fi
-if command -v Hyprland >/dev/null && (( portal_installed == 1 )); then
-  ok "Hyprland and its portal are already installed; upstream install stage is not needed."
+
+required_commands=(Hyprland hyprctl hypridle hyprlock rofi waybar swaync wl-copy cliphist grim slurp)
+missing_commands=()
+for command_name in "${required_commands[@]}"; do
+  command -v "$command_name" >/dev/null || missing_commands+=("$command_name")
+done
+
+if (( portal_installed == 1 && ${#missing_commands[@]} == 0 )); then
+  ok "Hyprland and the required desktop runtime are already installed; upstream install stage is not needed."
   exit 0
+fi
+
+if command -v Hyprland >/dev/null; then
+  warn "A partial Hyprland installation was detected; the upstream installer will resume."
+  if ((${#missing_commands[@]})); then
+    warn "Missing runtime commands: ${missing_commands[*]}"
+  fi
+  (( portal_installed == 1 )) || warn "Missing package: xdg-desktop-portal-hyprland"
 fi
 
 cache_base=${XDG_CACHE_HOME:-$HOME/.cache}/eftear-workstation-bootstrap
