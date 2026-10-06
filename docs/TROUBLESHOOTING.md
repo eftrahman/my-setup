@@ -4,6 +4,8 @@
 
 Reconnect AC power, log back into Plasma, and rerun `./bootstrap.sh`. The package stage skips tools that are not published by the enabled Ubuntu repositories and leaves them to the maintained upstream installer. The Hyprland stage checks the complete desktop runtime, so a partial installation is resumed instead of being mistaken for a finished one.
 
+The current upstream installer supplies the renamed `awww` wallpaper daemon. The bootstrap creates its official `swww`/`swww-daemon` compatibility command links because the preserved configuration still uses those names.
+
 If APT itself was interrupted, repair it first:
 
 ```bash

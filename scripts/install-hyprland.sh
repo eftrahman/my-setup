@@ -8,12 +8,25 @@ ROOT=$(repo_root)
 source "$ROOT/config/versions.env"
 load_os_release
 
+ensure_swww_compatibility() {
+  if command -v swww >/dev/null; then
+    return 0
+  fi
+  if command -v awww >/dev/null && command -v awww-daemon >/dev/null; then
+    info "Providing swww compatibility commands for the renamed awww wallpaper daemon."
+    run sudo ln -sfn "$(command -v awww)" /usr/local/bin/swww
+    run sudo ln -sfn "$(command -v awww-daemon)" /usr/local/bin/swww-daemon
+  fi
+}
+
+ensure_swww_compatibility
+
 portal_installed=0
 if dpkg-query -W -f='${Status}' xdg-desktop-portal-hyprland 2>/dev/null | grep -q 'install ok installed'; then
   portal_installed=1
 fi
 
-required_commands=(Hyprland hyprctl hypridle hyprlock rofi waybar swaync wl-copy cliphist grim slurp)
+required_commands=(Hyprland hyprctl hypridle hyprlock rofi waybar swaync wl-copy cliphist grim slurp swww)
 missing_commands=()
 for command_name in "${required_commands[@]}"; do
   command -v "$command_name" >/dev/null || missing_commands+=("$command_name")
@@ -50,4 +63,5 @@ if [[ ${DRY_RUN:-0} == 1 ]]; then
   print_command bash "$installer_dir/install.sh" --preset "$ROOT/config/upstream-preset.sh"
 else
   (cd "$installer_dir" && bash ./install.sh --preset "$ROOT/config/upstream-preset.sh")
+  ensure_swww_compatibility
 fi
