@@ -113,6 +113,7 @@ tooltip label {
 #cpu,
 #memory,
 #temperature,
+#battery,
 #network,
 #pulseaudio,
 #tray,
@@ -142,6 +143,33 @@ tooltip label {
 
 #temperature {
   color: @green;
+}
+
+#battery {
+  min-width: 72px;
+  color: @green;
+}
+
+#battery.charging {
+  color: @green;
+  background: rgba(120, 240, 194, 0.13);
+  box-shadow: inset 0 -2px @green;
+}
+
+#battery.plugged,
+#battery.full {
+  color: @cyan;
+  background: rgba(94, 231, 247, 0.11);
+}
+
+#battery.warning:not(.charging) {
+  color: @amber;
+}
+
+#battery.critical:not(.charging) {
+  color: @red;
+  background: rgba(255, 107, 129, 0.13);
+  box-shadow: inset 0 -2px @red;
 }
 
 #network {
@@ -203,6 +231,7 @@ tooltip label {
 #cpu:hover,
 #memory:hover,
 #temperature:hover,
+#battery:hover,
 #network:hover,
 #pulseaudio:hover,
 #custom-weather:hover,
