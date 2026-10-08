@@ -8,6 +8,11 @@ ROOT=$(repo_root)
 source "$ROOT/config/versions.env"
 load_os_release
 
+if ! component_selected hyprland; then
+  info "Hyprland stage skipped; Hyprland was not selected."
+  exit 0
+fi
+
 ensure_swww_compatibility() {
   if command -v swww >/dev/null; then
     return 0

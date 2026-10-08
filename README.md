@@ -22,25 +22,57 @@ cd "$HOME/dotfiles"
 ./bootstrap.sh
 ```
 
-The stages are:
+The bootstrap opens a checklist with three independent components:
+
+| Component | Installs and manages |
+| --- | --- |
+| `zsh` | Zsh, Oh My Zsh, Powerlevel10k, autosuggestions, syntax highlighting, NVM, Meslo Nerd Fonts, and Zsh configuration |
+| `tmux` | tmux, Oh My Tmux, Wayland clipboard support, and tmux configuration |
+| `hyprland` | Hyprland, desktop applications, JetBrainsMono Nerd Font, Waybar, Rofi, lock screen, themes, and wallpapers |
+
+Use the arrow keys to move, `Space` to toggle, `Tab` to reach **OK**, and `Enter` to continue. All three are selected by default. For scripts or a direct component installation, bypass the menu with:
+
+```bash
+./bootstrap.sh --components zsh
+./bootstrap.sh --components tmux
+./bootstrap.sh --components hyprland
+./bootstrap.sh --components zsh,tmux
+./bootstrap.sh --components all
+```
+
+Internally, the stages are:
 
 1. preflight and hardware summary;
 2. base packages;
 3. the maintained LinuxBeginnings Ubuntu-Hyprland installer, if Hyprland is absent;
-4. pinned Oh My Zsh, plugins, Powerlevel10k, Oh My Tmux, and NVM;
-5. verified JetBrainsMono Nerd Font plus Powerlevel10k's Meslo fonts;
-6. backup and deployment of the tracked configuration;
-7. syntax and runtime checks.
+4. selected pinned Zsh/tmux toolchains;
+5. fonts required by the selected components;
+6. backup and deployment of only the selected configuration;
+7. component-specific syntax and runtime checks.
 
 The upstream Hyprland installer remains interactive on purpose. GPU drivers, ROG support, display manager changes, and laptop choices must match the new hardware. The supplied preset enables the generic themes, Bluetooth, Thunar, and KooL baseline; this repository is deployed afterward.
 
 Run only selected stages when repairing or updating a machine:
 
 ```bash
-./bootstrap.sh --only shell,fonts,deploy,verify
-./bootstrap.sh --only verify
+./bootstrap.sh --components zsh --only shell,fonts,deploy,verify
+./bootstrap.sh --components tmux --only shell,deploy,verify
+./bootstrap.sh --components hyprland --only deploy,verify
 ./bootstrap.sh --no-chsh
 ```
+
+## Updating an existing machine
+
+The first successful bootstrap installs `my-setup-update` in `~/.local/bin`. It first performs a fast-forward-only pull from GitHub, then opens the same component checklist. Only the components selected in that run are installed, deployed, and verified:
+
+```bash
+my-setup-update
+my-setup-update --components zsh
+my-setup-update --components tmux
+my-setup-update --components hyprland
+```
+
+If the command is not available until the next login, use `~/.local/bin/my-setup-update` or run `./update.sh` from the repository. The pull stops safely if the repository contains conflicting local changes.
 
 ## Safety and recovery
 
@@ -88,4 +120,3 @@ git push -u origin main
 ```
 
 See [docs/AUDIT.md](docs/AUDIT.md) for the inventory and design decisions and [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for the fixes preserved by this setup.
-

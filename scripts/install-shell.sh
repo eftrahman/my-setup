@@ -27,27 +27,35 @@ install_repo() {
   ok "$name is pinned to $revision"
 }
 
-install_repo "Oh My Zsh" "$OH_MY_ZSH_URL" "$OH_MY_ZSH_REV" "$HOME/.oh-my-zsh"
-install_repo "Powerlevel10k" "$POWERLEVEL10K_URL" "$POWERLEVEL10K_REV" "$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
-install_repo "zsh-autosuggestions" "$ZSH_AUTOSUGGESTIONS_URL" "$ZSH_AUTOSUGGESTIONS_REV" "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-install_repo "zsh-syntax-highlighting" "$ZSH_SYNTAX_HIGHLIGHTING_URL" "$ZSH_SYNTAX_HIGHLIGHTING_REV" "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-install_repo "Oh My Tmux" "$OH_MY_TMUX_URL" "$OH_MY_TMUX_REV" "$HOME/.tmux"
-install_repo "nvm" "$NVM_URL" "$NVM_REV" "$HOME/.nvm"
+if component_selected zsh; then
+  install_repo "Oh My Zsh" "$OH_MY_ZSH_URL" "$OH_MY_ZSH_REV" "$HOME/.oh-my-zsh"
+  install_repo "Powerlevel10k" "$POWERLEVEL10K_URL" "$POWERLEVEL10K_REV" "$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
+  install_repo "zsh-autosuggestions" "$ZSH_AUTOSUGGESTIONS_URL" "$ZSH_AUTOSUGGESTIONS_REV" "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+  install_repo "zsh-syntax-highlighting" "$ZSH_SYNTAX_HIGHLIGHTING_URL" "$ZSH_SYNTAX_HIGHLIGHTING_REV" "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+  install_repo "nvm" "$NVM_URL" "$NVM_REV" "$HOME/.nvm"
 
-if [[ -e $HOME/.tmux.conf && ! -L $HOME/.tmux.conf ]]; then
-  warn "$HOME/.tmux.conf is a regular file; deploy will back it up before linking Oh My Tmux."
-elif [[ ${DRY_RUN:-0} == 1 ]]; then
-  print_command ln -sfn .tmux/.tmux.conf "$HOME/.tmux.conf"
-else
-  ln -sfn .tmux/.tmux.conf "$HOME/.tmux.conf"
-fi
-
-if [[ ${NO_CHSH:-0} != 1 ]]; then
-  zsh_path=$(command -v zsh)
-  current_shell=$(getent passwd "$(id -un)" | cut -d: -f7)
-  if [[ $current_shell != "$zsh_path" ]]; then
-    info "Changing the login shell to $zsh_path (this can request your password)."
-    run chsh -s "$zsh_path"
+  if [[ ${NO_CHSH:-0} != 1 ]]; then
+    zsh_path=$(command -v zsh)
+    current_shell=$(getent passwd "$(id -un)" | cut -d: -f7)
+    if [[ $current_shell != "$zsh_path" ]]; then
+      info "Changing the login shell to $zsh_path (this can request your password)."
+      run chsh -s "$zsh_path"
+    fi
   fi
 fi
 
+if component_selected tmux; then
+  install_repo "Oh My Tmux" "$OH_MY_TMUX_URL" "$OH_MY_TMUX_REV" "$HOME/.tmux"
+
+  if [[ -e $HOME/.tmux.conf && ! -L $HOME/.tmux.conf ]]; then
+    warn "$HOME/.tmux.conf is a regular file; deploy will back it up before linking Oh My Tmux."
+  elif [[ ${DRY_RUN:-0} == 1 ]]; then
+    print_command ln -sfn .tmux/.tmux.conf "$HOME/.tmux.conf"
+  else
+    ln -sfn .tmux/.tmux.conf "$HOME/.tmux.conf"
+  fi
+fi
+
+if ! component_selected zsh && ! component_selected tmux; then
+  info "Shell-tool stage skipped; neither zsh nor tmux was selected."
+fi

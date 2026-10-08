@@ -8,6 +8,7 @@ DRY_RUN=0
 ASSUME_YES=0
 NO_CHSH=0
 ONLY=''
+COMPONENTS=''
 
 usage() {
   cat <<'USAGE'
@@ -17,6 +18,7 @@ Options:
   --dry-run          Print every mutating command without running it.
   --yes              Accept this wrapper's confirmations (upstream UI remains interactive).
   --no-chsh          Do not change the login shell to Zsh.
+  --components LIST  Configure only: zsh,tmux,hyprland (or all).
   --only LIST        Run comma-separated stages: preflight,packages,hyprland,shell,fonts,deploy,verify.
   -h, --help         Show this help.
 
@@ -31,6 +33,8 @@ while (($#)); do
     --dry-run) DRY_RUN=1 ;;
     --yes) ASSUME_YES=1 ;;
     --no-chsh) NO_CHSH=1 ;;
+    --components) shift; (($#)) || die "--components requires a comma-separated value"; COMPONENTS=$1 ;;
+    --components=*) COMPONENTS=${1#*=} ;;
     --only) shift; (($#)) || die "--only requires a comma-separated value"; ONLY=$1 ;;
     --only=*) ONLY=${1#*=} ;;
     -h|--help) usage; exit 0 ;;
@@ -38,7 +42,60 @@ while (($#)); do
   esac
   shift
 done
-export DRY_RUN ASSUME_YES NO_CHSH
+
+choose_components() {
+  local choices reply
+  if [[ $ASSUME_YES == 1 ]]; then
+    COMPONENTS=all
+    return
+  fi
+
+  if command -v whiptail >/dev/null 2>&1; then
+    if ! choices=$(whiptail --title "Eftear Setup Components" --checklist \
+      "Select what to install or update. Space toggles; Tab moves to OK." 16 76 5 \
+      zsh "Zsh, Oh My Zsh, Powerlevel10k, plugins, NVM and fonts" ON \
+      tmux "tmux, Oh My Tmux and tmux configuration" ON \
+      hyprland "Hyprland desktop, applications, themes and wallpapers" ON \
+      3>&1 1>&2 2>&3); then
+      die "Component selection cancelled."
+    fi
+    COMPONENTS=${choices//\"/}
+    COMPONENTS=${COMPONENTS// /,}
+  else
+    printf '%s\n' 'Select components: zsh, tmux, hyprland, or all.'
+    read -r -p 'Components [all]: ' reply
+    COMPONENTS=${reply:-all}
+    COMPONENTS=${COMPONENTS// /,}
+  fi
+}
+
+normalize_components() {
+  local requested component normalized=''
+  local -a component_list=()
+  requested=${COMPONENTS,,}
+  requested=${requested// /,}
+  [[ $requested == all ]] && requested='zsh,tmux,hyprland'
+  IFS=',' read -r -a component_list <<<"$requested"
+  for component in "${component_list[@]}"; do
+    [[ -n $component ]] || continue
+    case $component in
+      zsh|tmux|hyprland) ;;
+      *) die "Unknown component: $component (choose zsh, tmux, hyprland, or all)." ;;
+    esac
+  done
+  for component in zsh tmux hyprland; do
+    if [[ ",$requested," == *",$component,"* ]]; then
+      normalized+="${normalized:+,}$component"
+    fi
+  done
+  [[ -n $normalized ]] || die "Select at least one component."
+  COMPONENTS=$normalized
+}
+
+[[ -n $COMPONENTS ]] || choose_components
+normalize_components
+SETUP_COMPONENTS=$COMPONENTS
+export DRY_RUN ASSUME_YES NO_CHSH SETUP_COMPONENTS
 
 all_stages=(preflight packages hyprland shell fonts deploy verify)
 if [[ -n $ONLY ]]; then
@@ -57,18 +114,18 @@ done
 cat <<'BANNER'
 Eftear workstation bootstrap
 ============================
-1. Validate Ubuntu/Kubuntu and hardware context
-2. Install direct package dependencies
-3. Run the maintained Ubuntu-Hyprland installer when needed
-4. Recreate the pinned Oh My Zsh / Oh My Tmux toolchain
-5. Install only the required Nerd Fonts
-6. Back up conflicts and deploy the known-good configuration
-7. Validate shell, tmux, JSON, commands, and live Hyprland state
+Component-aware installation and updates for Zsh, tmux, and Hyprland.
 BANNER
 
-if [[ $DRY_RUN != 1 ]] && ! confirm "Continue with stages: ${stages[*]}?"; then
+info "Selected components: $SETUP_COMPONENTS"
+info "Selected stages: ${stages[*]}"
+
+if [[ $DRY_RUN != 1 ]] && ! confirm "Continue with $SETUP_COMPONENTS?"; then
   die "Cancelled."
 fi
+
+run mkdir -p "$HOME/.local/bin"
+run ln -sfn "$SCRIPT_DIR/update.sh" "$HOME/.local/bin/my-setup-update"
 
 for stage in "${stages[@]}"; do
   printf '\n%s==> %s%s\n' "$C_BLUE" "$stage" "$C_RESET"
@@ -84,4 +141,10 @@ for stage in "${stages[@]}"; do
   "$SCRIPT_DIR/scripts/$stage_script"
 done
 
-ok "Bootstrap completed. Log out and choose Hyprland in SDDM if this was a fresh installation."
+ok "Bootstrap completed for: $SETUP_COMPONENTS"
+if component_selected zsh; then
+  info "Open a new terminal (or log out and back in) to use Zsh changes."
+fi
+if component_selected hyprland; then
+  info "For a fresh desktop install, log out and choose Hyprland in SDDM."
+fi

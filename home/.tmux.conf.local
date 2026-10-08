@@ -7,10 +7,11 @@
 #         Copyright 2012— Gregory Pakosz (@gpakosz).
 
 
-# -- Zsh ------------------------------------------------------------------
-set-option -g default-shell /bin/zsh
-# use p10k configure zsh design
-# -- Zsh ------------------------------------------------------------------
+# -- Login shell -----------------------------------------------------------
+# The standalone tmux component follows the user's current login shell.
+# Selecting the Zsh component changes that login shell to Zsh.
+set-option -g default-shell "$SHELL"
+# -------------------------------------------------------------------------
 
 
 # -- bindings ------------------------------------------------------------------
@@ -595,7 +596,5 @@ tmux_conf_uninstall_plugins_on_reload=true
 # "$@"
 # # /!\ do not remove the previous line
 # #     do not write below this line
-
-
 
 

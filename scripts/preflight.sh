@@ -14,13 +14,18 @@ command -v git >/dev/null || warn "git is missing; the packages stage will insta
 command -v curl >/dev/null || warn "curl is missing; the packages stage will install it."
 
 available_kib=$(df -Pk "$HOME" | awk 'NR == 2 {print $4}')
-(( available_kib >= 5242880 )) || die "At least 5 GiB free space is required for the upstream installer."
-
-ok "Ubuntu ${VERSION_ID} (${VERSION_CODENAME:-unknown}), user $(id -un), home $HOME"
-info "GPU summary (used only to guide the upstream installer):"
-if command -v lspci >/dev/null; then
-  lspci | grep -Ei 'vga|3d|display' || true
+if component_selected hyprland; then
+  (( available_kib >= 5242880 )) || die "At least 5 GiB free space is required for the Hyprland installer."
 else
-  warn "pciutils/lspci is not installed yet."
+  (( available_kib >= 524288 )) || die "At least 512 MiB free space is required."
 fi
 
+ok "Ubuntu ${VERSION_ID} (${VERSION_CODENAME:-unknown}), user $(id -un), home $HOME"
+if component_selected hyprland; then
+  info "GPU summary (used only to guide the upstream installer):"
+  if command -v lspci >/dev/null; then
+    lspci | grep -Ei 'vga|3d|display' || true
+  else
+    warn "pciutils/lspci is not installed yet."
+  fi
+fi

@@ -41,6 +41,11 @@ confirm() {
   [[ $reply == [yY] || $reply == [yY][eE][sS] ]]
 }
 
+component_selected() {
+  local component=$1
+  [[ ",${SETUP_COMPONENTS:-zsh,tmux,hyprland}," == *",$component,"* ]]
+}
+
 repo_root() {
   cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P
 }
@@ -59,4 +64,3 @@ load_os_release() {
     *) die "Supported Ubuntu releases are 24.04 and 26.04; detected ${VERSION_ID:-unknown}. Use a matching upstream branch before extending support." ;;
   esac
 }
-

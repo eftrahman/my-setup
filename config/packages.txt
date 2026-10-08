@@ -6,12 +6,9 @@ fontconfig
 git
 jq
 kitty
-lsd
 rsync
-tmux
 wl-clipboard
 xz-utils
-zsh
 
 # Desktop commands referenced by Hyprland, Waybar, and user scripts.
 brightnessctl
