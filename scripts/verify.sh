@@ -20,6 +20,15 @@ check_command() {
 if component_selected zsh; then
   for command_name in zsh lsd; do check_command "$command_name"; done
   if zsh -n "$HOME/.zshrc" "$HOME/.p10k.zsh"; then ok "Zsh syntax"; else failures=$((failures + 1)); fi
+  if [[ ${DRY_RUN:-0} != 1 ]]; then
+    updater_path=$(zsh -lc 'command -v my-setup-update' 2>/dev/null || true)
+    if [[ -n $updater_path ]]; then
+      ok "my-setup-update: $updater_path"
+    else
+      warn "my-setup-update is not available through the Zsh PATH"
+      failures=$((failures + 1))
+    fi
+  fi
   if fc-match 'MesloLGS NF' 2>/dev/null | grep -qi 'MesloLGS'; then
     ok "MesloLGS NF font"
   else
