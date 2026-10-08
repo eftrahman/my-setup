@@ -63,14 +63,21 @@ Run only selected stages when repairing or updating a machine:
 
 ## Updating an existing machine
 
-The first successful bootstrap installs `my-setup-update` in `~/.local/bin`. It first performs a fast-forward-only pull from GitHub, then opens the same component checklist. Only the components selected in that run are installed, deployed, and verified:
+The first successful bootstrap installs `my-setup-update` in `~/.local/bin`. With no options, it performs a fast-forward-only pull from GitHub and automatically updates, deploys, and verifies all three components:
 
 ```bash
 my-setup-update
+```
+
+Use a component option only when you intentionally want a partial update:
+
+```bash
 my-setup-update --components zsh
 my-setup-update --components tmux
 my-setup-update --components hyprland
 ```
+
+Run `./bootstrap.sh` directly when you want the interactive component checklist.
 
 If the command is not available until the next login, use `~/.local/bin/my-setup-update` or run `./update.sh` from the repository. The pull stops safely if the repository contains conflicting local changes.
 
