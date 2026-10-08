@@ -73,6 +73,11 @@ if component_selected hyprland; then
   else
     warn "plasma-apply-colorscheme is unavailable; skipping the KDE light palette"
   fi
+
+  if [[ ${DRY_RUN:-0} != 1 ]] && pgrep -x waybar >/dev/null 2>&1; then
+    pkill -SIGUSR2 -x waybar
+    info "Reloaded the running Waybar configuration."
+  fi
 fi
 
 ok "Configuration deployed for: ${SETUP_COMPONENTS}. Backup root: $backup_root"
