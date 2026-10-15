@@ -23,6 +23,7 @@
 
   "modules-left": [
     "group/app_drawer",
+    "custom/clipboard-library",
     "custom/shortcut-guide",
     "hyprland/window#tech"
   ],

@@ -118,6 +118,7 @@ tooltip label {
 #pulseaudio,
 #tray,
 #custom-weather,
+#custom-clipboard-library,
 #custom-shortcut-guide,
 #idle_inhibitor,
 #clock,
@@ -204,6 +205,14 @@ tooltip label {
   box-shadow: inset 0 -2px rgba(185, 145, 255, 0.72);
 }
 
+#custom-clipboard-library {
+  padding-left: 9px;
+  padding-right: 9px;
+  color: @cyan;
+  background: rgba(94, 231, 247, 0.10);
+  box-shadow: inset 0 -2px rgba(94, 231, 247, 0.70);
+}
+
 #idle_inhibitor {
   color: @muted;
 }
@@ -244,6 +253,7 @@ tooltip label {
 #network:hover,
 #pulseaudio:hover,
 #custom-weather:hover,
+#custom-clipboard-library:hover,
 #custom-shortcut-guide:hover,
 #idle_inhibitor:hover,
 #clock:hover,
