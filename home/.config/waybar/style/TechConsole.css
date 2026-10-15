@@ -118,6 +118,7 @@ tooltip label {
 #pulseaudio,
 #tray,
 #custom-weather,
+#custom-shortcut-guide,
 #idle_inhibitor,
 #clock,
 #custom-nightlight,
@@ -195,6 +196,14 @@ tooltip label {
   color: @amber;
 }
 
+#custom-shortcut-guide {
+  padding-left: 9px;
+  padding-right: 9px;
+  color: @violet;
+  background: rgba(185, 145, 255, 0.12);
+  box-shadow: inset 0 -2px rgba(185, 145, 255, 0.72);
+}
+
 #idle_inhibitor {
   color: @muted;
 }
@@ -235,6 +244,7 @@ tooltip label {
 #network:hover,
 #pulseaudio:hover,
 #custom-weather:hover,
+#custom-shortcut-guide:hover,
 #idle_inhibitor:hover,
 #clock:hover,
 #custom-nightlight:hover,
