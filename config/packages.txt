@@ -11,18 +11,22 @@ wl-clipboard
 xz-utils
 
 # Desktop commands referenced by Hyprland, Waybar, and user scripts.
+# network-manager + GTK bindings back the Network Center panel.
 brightnessctl
 btop
 cava
 cliphist
 fastfetch
+gir1.2-gtk-3.0
 grim
 hypridle
 hyprlock
 hyprpaper
 hyprpicker
 hyprsunset
+network-manager
 playerctl
+python3-gi
 qt5ct
 qt6ct
 rofi

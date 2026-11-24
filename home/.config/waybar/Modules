@@ -278,6 +278,7 @@
 	"tooltip-format-ethernet": "{ifname} 󰌘",
 	"tooltip-format-disconnected": "󰌙 Disconnected",
 	"max-length": 30,
+	"on-click": "$HOME/.config/hypr/scripts/NetworkCenter.py",
 	"format-icons": [
 		"󰤯", "󰤟", "󰤢", "󰤥", "󰤨"
 	],
