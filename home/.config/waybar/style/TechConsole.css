@@ -114,6 +114,7 @@ tooltip label {
 #memory,
 #temperature,
 #battery,
+#custom-media-visualizer,
 #custom-media-prev,
 #custom-media,
 #custom-media-next,
@@ -191,6 +192,67 @@ tooltip label {
 #custom-media.paused {
   color: @muted;
 }
+
+/* One joined player pill: bars, previous, title with a progress line, next */
+#custom-media-visualizer {
+  margin-left: 6px;
+  padding: 0 8px;
+  font-size: 11px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(94, 231, 247, 0.13), rgba(185, 145, 255, 0.16));
+}
+
+#custom-media-prev {
+  margin-right: 0;
+  border-radius: 6px 0 0 6px;
+}
+
+#custom-media-next {
+  margin-left: 0;
+  border-radius: 0 6px 6px 0;
+}
+
+#custom-media {
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 0;
+  background-color: @chip;
+  background-image: linear-gradient(90deg, @cyan, @violet);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 0 2px;
+  transition: background-size 1s linear;
+}
+
+#custom-media.paused {
+  background-image: linear-gradient(90deg, @muted, @muted);
+}
+
+#custom-media:hover {
+  background-color: @chip-hover;
+}
+
+#custom-media.p0 { background-size: 0% 2px; }
+#custom-media.p1 { background-size: 5% 2px; }
+#custom-media.p2 { background-size: 10% 2px; }
+#custom-media.p3 { background-size: 15% 2px; }
+#custom-media.p4 { background-size: 20% 2px; }
+#custom-media.p5 { background-size: 25% 2px; }
+#custom-media.p6 { background-size: 30% 2px; }
+#custom-media.p7 { background-size: 35% 2px; }
+#custom-media.p8 { background-size: 40% 2px; }
+#custom-media.p9 { background-size: 45% 2px; }
+#custom-media.p10 { background-size: 50% 2px; }
+#custom-media.p11 { background-size: 55% 2px; }
+#custom-media.p12 { background-size: 60% 2px; }
+#custom-media.p13 { background-size: 65% 2px; }
+#custom-media.p14 { background-size: 70% 2px; }
+#custom-media.p15 { background-size: 75% 2px; }
+#custom-media.p16 { background-size: 80% 2px; }
+#custom-media.p17 { background-size: 85% 2px; }
+#custom-media.p18 { background-size: 90% 2px; }
+#custom-media.p19 { background-size: 95% 2px; }
+#custom-media.p20 { background-size: 100% 2px; }
 
 #custom-display-center {
   color: @cyan;
@@ -286,7 +348,6 @@ tooltip label {
 #temperature:hover,
 #battery:hover,
 #custom-media-prev:hover,
-#custom-media:hover,
 #custom-media-next:hover,
 #custom-display-center:hover,
 #bluetooth:hover,

@@ -89,6 +89,14 @@
 	"tooltip": true,
 },
 
+"custom/media-visualizer": {
+	"exec": "$HOME/.config/hypr/scripts/MediaBar.py visualizer",
+	"format": "{}",
+	"restart-interval": 5,
+	"on-click": "$HOME/.config/hypr/scripts/MediaBar.py toggle",
+	"tooltip": false,
+},
+
 "custom/media-prev": {
 	"exec": "$HOME/.config/hypr/scripts/MediaBar.py button prev",
 	"interval": "once",

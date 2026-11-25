@@ -26,6 +26,7 @@
     "custom/clipboard-library",
     "custom/shortcut-guide",
     "hyprland/window#tech",
+    "custom/media-visualizer",
     "custom/media-prev",
     "custom/media",
     "custom/media-next"
