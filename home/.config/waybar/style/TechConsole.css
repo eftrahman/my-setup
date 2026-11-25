@@ -114,6 +114,9 @@ tooltip label {
 #memory,
 #temperature,
 #battery,
+#custom-media-prev,
+#custom-media,
+#custom-media-next,
 #custom-display-center,
 #bluetooth,
 #network,
@@ -174,6 +177,19 @@ tooltip label {
   color: @red;
   background: rgba(255, 107, 129, 0.13);
   box-shadow: inset 0 -2px @red;
+}
+
+#custom-media-prev,
+#custom-media-next {
+  color: @muted;
+}
+
+#custom-media {
+  color: @green;
+}
+
+#custom-media.paused {
+  color: @muted;
 }
 
 #custom-display-center {
@@ -269,6 +285,9 @@ tooltip label {
 #memory:hover,
 #temperature:hover,
 #battery:hover,
+#custom-media-prev:hover,
+#custom-media:hover,
+#custom-media-next:hover,
 #custom-display-center:hover,
 #bluetooth:hover,
 #network:hover,

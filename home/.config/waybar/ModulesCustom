@@ -78,6 +78,33 @@
 	"tooltip-format": "Shortcut Command Center\nLeft click: visual guide\nRight click: compact list",
 },
 
+"custom/media": {
+	"exec": "$HOME/.config/hypr/scripts/MediaBar.py watch",
+	"return-type": "json",
+	"format": "{}",
+	"restart-interval": 5,
+	"on-click": "$HOME/.config/hypr/scripts/MediaBar.py toggle",
+	"on-scroll-up": "$HOME/.config/hypr/scripts/MediaBar.py forward",
+	"on-scroll-down": "$HOME/.config/hypr/scripts/MediaBar.py back",
+	"tooltip": true,
+},
+
+"custom/media-prev": {
+	"exec": "$HOME/.config/hypr/scripts/MediaBar.py button prev",
+	"interval": "once",
+	"signal": 9,
+	"on-click": "$HOME/.config/hypr/scripts/MediaBar.py prev",
+	"tooltip-format": "Previous",
+},
+
+"custom/media-next": {
+	"exec": "$HOME/.config/hypr/scripts/MediaBar.py button next",
+	"interval": "once",
+	"signal": 9,
+	"on-click": "$HOME/.config/hypr/scripts/MediaBar.py next",
+	"tooltip-format": "Next",
+},
+
 "custom/display-center": {
 	"format": "󰍹",
 	"on-click": "$HOME/.config/hypr/scripts/DisplayCenter.py",

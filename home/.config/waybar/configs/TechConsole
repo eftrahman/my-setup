@@ -25,7 +25,10 @@
     "group/app_drawer",
     "custom/clipboard-library",
     "custom/shortcut-guide",
-    "hyprland/window#tech"
+    "hyprland/window#tech",
+    "custom/media-prev",
+    "custom/media",
+    "custom/media-next"
   ],
 
   "modules-center": [
@@ -52,7 +55,7 @@
 
   "hyprland/window#tech": {
     "format": "󰘔  {}",
-    "max-length": 32,
+    "max-length": 24,
     "separate-outputs": true,
     "rewrite": {
       "(.*) — Mozilla Firefox": "  $1",
