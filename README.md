@@ -2,7 +2,7 @@
 
 This repository is a migration-safe snapshot of Eftear's working Kubuntu setup:
 
-- Hyprland/KooL desktop configuration, including custom clipboard history, a Network Center (Wi-Fi, saved connections, and hotspot control from the Waybar network module), a visual screen-share picker with live monitor/window thumbnails for Google Meet and other portal apps, a Screenshot Editor (arrows, highlights, text, numbered steps, pixelate, crop) reachable from every screenshot notification, screenshots, Show Desktop, lock screen, Waybar, Rofi, Kitty, SwayNC, Wlogout, Wallust, and wallpapers.
+- Hyprland/KooL desktop configuration, including custom clipboard history, a Network Center (Wi-Fi, saved connections, and hotspot control from the Waybar network module), a visual screen-share picker with live monitor/window thumbnails for Google Meet and other portal apps, a Screenshot Editor (arrows, highlights, text, numbered steps, pixelate, crop) reachable from every screenshot notification, a Workspace Overview on Super+A (live miniatures, search, drag windows between workspaces), screenshots, Show Desktop, lock screen, Waybar, Rofi, Kitty, SwayNC, Wlogout, Wallust, and wallpapers.
 - Oh My Zsh with Powerlevel10k, autosuggestions, syntax highlighting, NVM integration, and the current prompt.
 - Oh My Tmux with the local theme, pane bindings, window naming, and Wayland system-clipboard integration.
 - A staged installer that delegates Hyprland package ownership to the maintained Ubuntu installer while keeping personal configuration in this repository.
