@@ -114,6 +114,7 @@ tooltip label {
 #memory,
 #temperature,
 #battery,
+#bluetooth,
 #network,
 #pulseaudio,
 #tray,
@@ -176,6 +177,19 @@ tooltip label {
 
 #network {
   color: #82b7ff;
+}
+
+#bluetooth {
+  color: #7aa2ff;
+}
+
+#bluetooth.connected {
+  color: @cyan;
+}
+
+#bluetooth.off,
+#bluetooth.disabled {
+  color: @muted;
 }
 
 #pulseaudio {
@@ -250,6 +264,7 @@ tooltip label {
 #memory:hover,
 #temperature:hover,
 #battery:hover,
+#bluetooth:hover,
 #network:hover,
 #pulseaudio:hover,
 #custom-weather:hover,

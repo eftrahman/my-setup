@@ -12,6 +12,7 @@ xz-utils
 
 # Desktop commands referenced by Hyprland, Waybar, and user scripts.
 # network-manager + GTK bindings back the Network Center panel.
+bluez
 brightnessctl
 btop
 cava

@@ -37,6 +37,7 @@
     "memory#tech",
     "temperature#tech",
     "battery",
+    "bluetooth#tech",
     "network#tech",
     "pulseaudio#tech",
     "tray#tech",
@@ -106,6 +107,20 @@
     "format-critical": "󰸁 {temperatureC}°",
     "tooltip-format": "System temperature: {temperatureC}°C\nRight-click: nvtop",
     "on-click-right": "$HOME/.config/hypr/scripts/WaybarScripts.sh --nvtop"
+  },
+
+  "bluetooth#tech": {
+    "format": "󰂯",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "format-connected": "󰂱 {num_connections}",
+    "format-connected-battery": "󰂱 {device_battery_percentage}%",
+    "format-no-controller": "",
+    "tooltip-format": "Bluetooth {status}\nClick: Bluetooth Center",
+    "tooltip-format-connected": "{device_enumerate}\n\nClick: Bluetooth Center",
+    "tooltip-format-enumerate-connected": "{device_alias}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}  󰁹 {device_battery_percentage}%",
+    "on-click": "$HOME/.config/hypr/scripts/BluetoothCenter.py"
   },
 
   "network#tech": {
