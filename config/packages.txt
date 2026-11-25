@@ -27,6 +27,7 @@ hyprsunset
 network-manager
 playerctl
 python3-gi
+python3-gi-cairo
 qt5ct
 qt6ct
 rofi

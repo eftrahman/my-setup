@@ -16,18 +16,31 @@ active_window_class=$(hyprctl -j activewindow | jq -r '(.class)')
 active_window_file="Screenshot_${time}_${active_window_class}.png"
 active_window_path="${dir}/${active_window_file}"
 
-notify_cmd_base="notify-send -t 10000 -A action1=Open -A action2=Delete -h string:x-canonical-private-synchronous:shot-notify"
+notify_cmd_base="notify-send -t 10000 -A edit=Edit -A action1=Open -A action2=Delete -h string:x-canonical-private-synchronous:shot-notify"
+editor="${sDIR}/ScreenshotEditor.py"
 notify_cmd_shot="${notify_cmd_base} -i ${iDIR}/picture.png "
 notify_cmd_shot_win="${notify_cmd_base} -i ${iDIR}/picture.png "
 notify_cmd_NOT="notify-send -u low -i ${iDoR}/note.png "
+
+# open a screenshot in the annotation editor (falls back to swappy inside the editor)
+edit_shot() {
+    if [[ -x "$editor" ]]; then
+        "$editor" "$1" &
+    else
+        swappy -f "$1" &
+    fi
+}
 
 # notify and view screenshot
 notify_view() {
     if [[ "$1" == "active" ]]; then
         if [[ -e "${active_window_path}" ]]; then
 			"${sDIR}/Sounds.sh" --screenshot        
-            resp=$(timeout 5 ${notify_cmd_shot_win} " Screenshot of:" " ${active_window_class} Saved.")
+            resp=$(${notify_cmd_shot_win} " Screenshot of:" " ${active_window_class} Saved.")
             case "$resp" in
+				edit)
+					edit_shot "${active_window_path}"
+					;;
 				action1)
 					xdg-open "${active_window_path}" &
 					;;
@@ -44,6 +57,9 @@ notify_view() {
 		"${sDIR}/Sounds.sh" --screenshot
 		resp=$(${notify_cmd_shot} " Screenshot:" " Captured by Swappy")
 		case "$resp" in
+			edit)
+				edit_shot "$tmpfile"
+				;;
 			action1)
 				swappy -f - <"$tmpfile"
 				;;
@@ -56,8 +72,11 @@ notify_view() {
         local check_file="${dir}/${file}"
         if [[ -e "$check_file" ]]; then
             "${sDIR}/Sounds.sh" --screenshot
-            resp=$(timeout 5 ${notify_cmd_shot} " Screenshot" " Saved")
+            resp=$(${notify_cmd_shot} " Screenshot" " Saved")
 			case "$resp" in
+				edit)
+					edit_shot "${check_file}"
+					;;
 				action1)
 					xdg-open "${check_file}" &
 					;;
@@ -140,6 +159,28 @@ shotswappy() {
   fi
 }
 
+# select an area and go straight into the editor
+shotedit() {
+	local target="$dir/$file"
+	grim -g "$(slurp)" "$target" || exit 0
+	if [[ -s "$target" ]]; then
+		wl-copy <"$target"
+		"${sDIR}/Sounds.sh" --screenshot
+		edit_shot "$target"
+	fi
+}
+
+# reopen the most recent screenshot in the editor
+editlast() {
+	local latest
+	latest=$(find "$dir" -maxdepth 1 -type f -name '*.png' -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -n1 | cut -d' ' -f2-)
+	if [[ -n "$latest" ]]; then
+		edit_shot "$latest"
+	else
+		${notify_cmd_NOT} " Screenshot" " No screenshots in $dir yet"
+	fi
+}
+
 if [[ ! -d "$dir" ]]; then
 	mkdir -p "$dir"
 fi
@@ -158,8 +199,12 @@ elif [[ "$1" == "--active" ]]; then
 	shotactive
 elif [[ "$1" == "--swappy" ]]; then
 	shotswappy
+elif [[ "$1" == "--edit" ]]; then
+	shotedit
+elif [[ "$1" == "--edit-last" ]]; then
+	editlast
 else
-	echo -e "Available Options : --now --in5 --in10 --win --area --active --swappy"
+	echo -e "Available Options : --now --in5 --in10 --win --area --active --swappy --edit --edit-last"
 fi
 
 exit 0
