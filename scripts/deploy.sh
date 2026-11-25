@@ -51,14 +51,14 @@ if component_selected hyprland; then
   run cp -a -- "$ROOT/assets/wallpapers" "$HOME/Pictures/wallpapers"
 
   if [[ ${DRY_RUN:-0} == 1 ]]; then
-    print_command sed -i "s|@HOME@|$HOME|g" "$HOME/.config/qt5ct/qt5ct.conf" "$HOME/.config/qt6ct/qt6ct.conf"
+    print_command sed -i "s|@HOME@|$HOME|g" "$HOME/.config/qt5ct/qt5ct.conf" "$HOME/.config/qt6ct/qt6ct.conf" "$HOME/.config/hypr/xdph.conf"
     print_command ln -sfn configs/TechConsole "$HOME/.config/waybar/config"
     print_command ln -sfn style/TechConsole.css "$HOME/.config/waybar/style.css"
     print_command ln -sfn "$HOME/Pictures/wallpapers/Dynamic-Wallpapers/Dark/Beach-Dark.png" "$HOME/.config/rofi/.current_wallpaper"
     print_command mkdir -p "$HOME/.config/hypr/wallpaper_effects"
     print_command ln -sfn "$HOME/Pictures/wallpapers/Dynamic-Wallpapers/Dark/Beach-Dark.png" "$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
   else
-    sed -i "s|@HOME@|$HOME|g" "$HOME/.config/qt5ct/qt5ct.conf" "$HOME/.config/qt6ct/qt6ct.conf"
+    sed -i "s|@HOME@|$HOME|g" "$HOME/.config/qt5ct/qt5ct.conf" "$HOME/.config/qt6ct/qt6ct.conf" "$HOME/.config/hypr/xdph.conf"
     ln -sfn configs/TechConsole "$HOME/.config/waybar/config"
     ln -sfn style/TechConsole.css "$HOME/.config/waybar/style.css"
     ln -sfn "$HOME/Pictures/wallpapers/Dynamic-Wallpapers/Dark/Beach-Dark.png" "$HOME/.config/rofi/.current_wallpaper"
@@ -72,6 +72,11 @@ if component_selected hyprland; then
     run plasma-apply-colorscheme KubuntuLight
   else
     warn "plasma-apply-colorscheme is unavailable; skipping the KDE light palette"
+  fi
+
+  # The screen-share portal reads xdph.conf only at startup.
+  if [[ ${DRY_RUN:-0} != 1 ]] && systemctl --user is-active --quiet xdg-desktop-portal-hyprland 2>/dev/null; then
+    systemctl --user restart xdg-desktop-portal-hyprland && info "Restarted the screen-share portal."
   fi
 
   if [[ ${DRY_RUN:-0} != 1 ]] && pgrep -x waybar >/dev/null 2>&1; then
