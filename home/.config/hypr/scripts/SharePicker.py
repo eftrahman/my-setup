@@ -25,6 +25,57 @@ import sys
 import threading
 
 FALLBACK = "/usr/bin/hyprland-share-picker"
+RUNTIME = os.environ.get("XDG_RUNTIME_DIR") or "/tmp"
+LAST_CHOICE = os.path.join(RUNTIME, "sharepicker-last")
+LOG_FILE = os.path.join(RUNTIME, "sharepicker.log")
+# Chrome/Meet asks the portal several times for one share (preview in its own
+# dialog, then the real stream). Reusing a choice made seconds ago means the
+# picker only shows once per share.
+REUSE_SECONDS = 30
+
+
+def log(message):
+    try:
+        import time
+        with open(LOG_FILE, "a", encoding="utf-8") as handle:
+            handle.write(f"{time.strftime('%H:%M:%S')} {message}\n")
+    except OSError:
+        pass
+
+
+def recent_choice(window_ids):
+    """Return a selection made within REUSE_SECONDS if its target still exists."""
+    import time
+    try:
+        with open(LAST_CHOICE, encoding="utf-8") as handle:
+            stamp, selection = handle.read().split("\n", 1)
+        if time.time() - float(stamp) > REUSE_SECONDS:
+            return None
+    except (OSError, ValueError):
+        return None
+    selection = selection.strip()
+    body = selection.split("/", 1)[-1]
+    if body.startswith("window:") and body[7:] not in window_ids:
+        return None
+    if body.startswith(("screen:", "region:")):
+        name = body.split(":", 1)[1].split("@", 1)[0]
+        try:
+            names = {m["name"] for m in json.loads(subprocess.run(
+                ["hyprctl", "-j", "monitors"], capture_output=True, text=True, timeout=3).stdout)}
+        except (OSError, subprocess.SubprocessError, ValueError):
+            names = set()
+        if name not in names:
+            return None
+    return selection
+
+
+def remember_choice(selection):
+    import time
+    try:
+        with open(LAST_CHOICE, "w", encoding="utf-8") as handle:
+            handle.write(f"{time.time()}\n{selection}\n")
+    except OSError:
+        pass
 
 
 def fallback(reason):
@@ -240,7 +291,7 @@ class SharePicker(Gtk.Window):
         self.remember.set_active(allow_token)
         self.remember.set_tooltip_text("Lets the app re-share the same source next time without asking")
         bottom.pack_start(self.remember, False, False, 0)
-        bottom.pack_start(label("Enter share  •  Tab switch  •  1-9 pick  •  Esc cancel", "hint"), True, True, 0)
+        bottom.pack_start(label("Click to share  •  Tab switch  •  1-9 pick  •  Esc cancel", "hint"), True, True, 0)
         cancel = Gtk.Button(label="Cancel")
         cancel.get_style_context().add_class("action")
         cancel.connect("clicked", lambda *_: self.destroy())
@@ -269,7 +320,7 @@ class SharePicker(Gtk.Window):
         box.set_row_spacing(14)
         box.set_homogeneous(True)
         box.set_valign(Gtk.Align.START)
-        box.set_activate_on_single_click(False)
+        box.set_activate_on_single_click(True)  # one click shares
         box.connect("child-activated", lambda *_: self.confirm())
         box.connect("selected-children-changed", lambda *_: self.update_share())
         return box
@@ -505,6 +556,12 @@ class SharePicker(Gtk.Window):
 
 def main():
     allow_token = "--allow-token" in sys.argv[1:]
+    window_ids = {w["id"] for w in parse_window_list(os.environ.get("XDPH_WINDOW_SHARING_LIST", ""))}
+    reused = recent_choice(window_ids)
+    if reused:
+        log(f"reused {reused}")
+        print(reused, flush=True)
+        return 0
     try:
         provider = Gtk.CssProvider()
         provider.load_from_data(CSS)
@@ -517,8 +574,11 @@ def main():
         fallback(f"startup failed ({error})")
     Gtk.main()
     if picker.result:
+        remember_choice(picker.result)
+        log(f"chose {picker.result}")
         print(picker.result, flush=True)
         return 0
+    log("cancelled")
     return 1
 
 
