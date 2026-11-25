@@ -33,6 +33,28 @@ backup_path() {
   fi
 }
 
+# Per-machine display layout: lives outside the managed paths so updates never
+# replace it. Created first because hyprland.conf sources it. An existing custom
+# monitors.conf (e.g. from nwg-displays) seeds it once.
+if component_selected hyprland; then
+  displays_conf=$HOME/.config/hypr-local/displays.conf
+  if [[ ! -e $displays_conf ]]; then
+    run mkdir -p "$(dirname -- "$displays_conf")"
+    if [[ ${DRY_RUN:-0} == 1 ]]; then
+      print_command touch "$displays_conf"
+    else
+      {
+        printf '# Display layout for THIS machine (Display Center: Super+Shift+P).\n'
+        if [[ -r $HOME/.config/hypr/monitors.conf ]]; then
+          grep -E '^[[:space:]]*monitor[[:space:]]*=' "$HOME/.config/hypr/monitors.conf" \
+            | grep -vxFf "$SOURCE/.config/hypr/monitors.conf" || true
+        fi
+      } >"$displays_conf"
+      info "Created machine-local display layout: $displays_conf"
+    fi
+  fi
+fi
+
 for relative in "${managed_paths[@]}"; do
   [[ -e $SOURCE/$relative || -L $SOURCE/$relative ]] || die "Repository source is missing: $SOURCE/$relative"
   backup_path "$relative"

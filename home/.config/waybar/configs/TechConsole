@@ -37,6 +37,7 @@
     "memory#tech",
     "temperature#tech",
     "battery",
+    "custom/display-center",
     "bluetooth#tech",
     "network#tech",
     "pulseaudio#tech",

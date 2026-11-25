@@ -78,6 +78,13 @@
 	"tooltip-format": "Shortcut Command Center\nLeft click: visual guide\nRight click: compact list",
 },
 
+"custom/display-center": {
+	"format": "󰍹",
+	"on-click": "$HOME/.config/hypr/scripts/DisplayCenter.py",
+	"tooltip": true,
+	"tooltip-format": "Display Center\nArrange, scale and switch monitors\nShortcut: Super + Shift + P",
+},
+
 "custom/clipboard-library": {
 	"format": "󰅌",
 	"on-click": "$HOME/.config/hypr/UserScripts/ClipboardHistory.sh",
