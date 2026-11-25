@@ -123,11 +123,17 @@ class IconCache:
             return self.cache[key]
         pixbuf = None
         names = [app_class, app_class.lower(), app_class.split(".")[-1].lower()]
-        info = Gio.DesktopAppInfo.new(f"{app_class}.desktop") if app_class else None
+        def lookup(desktop_id):
+            try:
+                return Gio.DesktopAppInfo.new(desktop_id)
+            except TypeError:  # PyGObject raises when the .desktop file is missing
+                return None
+
+        info = lookup(f"{app_class}.desktop") if app_class else None
         if info is None and app_class:
             matches = Gio.DesktopAppInfo.search(app_class)
             if matches and matches[0]:
-                info = Gio.DesktopAppInfo.new(matches[0][0])
+                info = lookup(matches[0][0])
         if info and info.get_icon():
             names.insert(0, info.get_icon().to_string())
         for name in names + ["application-x-executable"]:

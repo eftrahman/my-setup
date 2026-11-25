@@ -363,7 +363,10 @@ class SharePicker(Gtk.Window):
         for name in (app_class, app_class.lower(), app_class.split(".")[-1].lower()):
             if theme.has_icon(name):
                 return Gtk.Image.new_from_icon_name(name, Gtk.IconSize.DIALOG)
-        info = Gio.DesktopAppInfo.new(f"{app_class}.desktop")
+        try:
+            info = Gio.DesktopAppInfo.new(f"{app_class}.desktop")
+        except TypeError:  # no such .desktop file
+            info = None
         if info and info.get_icon():
             return Gtk.Image.new_from_gicon(info.get_icon(), Gtk.IconSize.DIALOG)
         return None
